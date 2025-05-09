@@ -7,19 +7,8 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: window.location.origin,
-      },
-    });
-
-    if (!error) {
-      setSubmitted(true);
-    } else {
-      alert("Fehler beim Senden des Login-Links: " + error.message);
-    }
+    const { error } = await supabase.auth.signInWithOtp({ email });
+    if (!error) setSubmitted(true);
   };
 
   return (
