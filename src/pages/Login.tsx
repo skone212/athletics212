@@ -1,19 +1,26 @@
 import { useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "../lib/supabaseClient";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  async function handleLogin(e: React.FormEvent) {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithOtp({ email });
+
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: window.location.origin,
+      },
+    });
+
     if (!error) {
       setSubmitted(true);
     } else {
-      alert("Fehler beim Login.");
+      alert("Fehler beim Senden des Login-Links: " + error.message);
     }
-  }
+  };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-50">
